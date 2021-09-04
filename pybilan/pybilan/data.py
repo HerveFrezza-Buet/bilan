@@ -42,6 +42,16 @@ def group_values(table, attr, groups):
                 d[attr] = grp
                 res.append(d)
     return res
+
+def pie_data(table, attr):
+    """
+    returns {'labels' : [sort1, sort2, ...], 'fracs' : [nb_sort1, nb_sort2, ...]}
+    """
+    count = {v:0 for v in get_values(table, attr)}
+    for data in table:
+        if attr in data :
+            count[data[attr]] += 1
+    return {'labels' : count.keys(), 'fracs' : count.values()}
     
 
 
@@ -74,6 +84,9 @@ if __name__ == "__main__":
     print(make_single(table, 'Sex'))
     print()
     print('Group values')
-    print(table)
     print(group_values(table, 'Age', age_of))
     print(group_values(table, 'Name', country_of))
+    print()
+    print('Pie')
+    print(pie_data(table, 'Age'))
+    print(pie_data(table, 'Sex'))
