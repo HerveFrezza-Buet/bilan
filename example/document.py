@@ -35,4 +35,7 @@ activities = data.decode_values(activities, col_computers, codes)
 activities = data.decode_values(activities, col_activities, codes)
 document.make_bars(activities, col_computers, col_activities, 'Activities by cluster (({} acts realized).')
 
+# We build the latex file for the report.
+document.generate()
+
 
