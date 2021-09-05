@@ -55,7 +55,8 @@ def group_values_dict(table, attr, groups):
 
 def pie_data(table, attr):
     """
-    returns {'sorts' : [sort1, sort2, ...], 'data' : [nb_sort1, nb_sort2, ...]}
+    returns {'sorts' : [sort1, sort2, ...], 
+             'data'  : [nb_sort1, nb_sort2, ...]}
     """
     count = {v:0 for v in get_values(table, attr)}
     for data in table:
@@ -64,6 +65,36 @@ def pie_data(table, attr):
             if value is not None:
                 count[value] += 1
     return {'sorts' : count.keys(), 'data' : count.values()}
+
+def bar_data(table, sort_attr, category_attr):
+    """
+    Data for displaying a bar grap. Each bar corresponds to a category,
+    for each bar, the amount of values of each sort is stacked.
+    returns {'sorts'     : [sort1, sort2, ...], 
+             'categories : [cat1, cat2, ...],
+             'data'      : [[nb_sort1_for_cat1, nb_sort1_for_cat2, ...],
+                            [nb_sort2_for_cat1, nb_sort1_for_cat2, ...],
+                            ...]}
+    """
+    res = {'sorts'      : get_values(table, sort_attr),
+           'categories' : get_values(table, category_attr),
+           'data'       : []}
+    nb_sorts      = len(res['sorts'])
+    nb_categories = len(res['categories'])
+    
+    sort_idx     = {s:i for i, s in enumerate(res['sorts'])}
+    category_idx = {s:i for i, s in enumerate(res['categories'])}
+    for i in range(nb_sorts) :
+        res['data'].append([0]*nb_categories)
+
+    
+    for data in table:
+        if sort_attr in data and category_attr in data:
+            sort     = data[sort_attr]
+            category = data[category_attr]
+            if sort is not None and category is not None:
+                res['data'][sort_idx[sort]][category_idx[category]] += 1
+    return res
     
 
 
@@ -102,3 +133,6 @@ if __name__ == "__main__":
     print('Pie')
     print(pie_data(table, 'Age'))
     print(pie_data(table, 'Sex'))
+    print()
+    print('Bar')
+    print(bar_data(table, 'Age', 'Sex'))
