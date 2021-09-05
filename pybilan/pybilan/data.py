@@ -7,9 +7,10 @@ def make_single(table, attr):
     for data in table:
         if attr in data :
             value = data[attr]
-            if not value in values :
-                values.append(value)
-                res.append(data)
+            if value is not None:
+                if not value in values :
+                    values.append(value)
+                    res.append(data)
     return res
 
 def get_values(table, attr):
@@ -20,28 +21,37 @@ def get_values(table, attr):
     for data in table:
         if attr in data :
             value = data[attr]
-            if not value in values :
-                values.append(value)
+            if value is not None:
+                if not value in values :
+                    values.append(value)
     return values
 
-def group_values(table, attr, groups):
+
+def group_values_fct(table, attr, group_of):
     """
-    groups is {g1 : [val1, val2, ...], g2 : [val1, val2, ...]}
-    Returns the table, where attr is replaced by its group name (or removed if no group is found).
+    group_of(value) returns the group, or None
+    Returns the table, where attr is replaced by its group name (or removed if None).
     """
-    def group_of(val, grps):
-        for g, vs in grps.items() :
-            if val in vs :
-                return g
     res = []
     for data in table:
         if attr in data :
-            grp = group_of(data[attr], groups)
+            grp = group_of(data[attr])
             if grp is not None :
                 d = {k : v  for k, v in data.items()}
                 d[attr] = grp
                 res.append(d)
     return res
+                
+def group_values_dict(table, attr, groups):
+    """
+    groups is {g1 : [val1, val2, ...], g2 : [val1, val2, ...]}
+    Returns the table, where attr is replaced by its group name (or removed if no group is found).
+    """
+    def group_of(val):
+        for g, vs in groups.items() :
+            if val in vs :
+                return g
+    return group_values_fct(table, attr, group_of)
 
 def pie_data(table, attr):
     """
@@ -50,7 +60,9 @@ def pie_data(table, attr):
     count = {v:0 for v in get_values(table, attr)}
     for data in table:
         if attr in data :
-            count[data[attr]] += 1
+            value = data[attr]
+            if value is not None:
+                count[value] += 1
     return {'labels' : count.keys(), 'fracs' : count.values()}
     
 
@@ -84,8 +96,8 @@ if __name__ == "__main__":
     print(make_single(table, 'Sex'))
     print()
     print('Group values')
-    print(group_values(table, 'Age', age_of))
-    print(group_values(table, 'Name', country_of))
+    print(group_values_dict(table, 'Age', age_of))
+    print(group_values_dict(table, 'Name', country_of))
     print()
     print('Pie')
     print(pie_data(table, 'Age'))
