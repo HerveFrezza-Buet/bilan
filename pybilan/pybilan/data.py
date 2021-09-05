@@ -55,7 +55,7 @@ def group_values_dict(table, attr, groups):
 
 def pie_data(table, attr):
     """
-    returns {'labels' : [sort1, sort2, ...], 'fracs' : [nb_sort1, nb_sort2, ...]}
+    returns {'sorts' : [sort1, sort2, ...], 'data' : [nb_sort1, nb_sort2, ...]}
     """
     count = {v:0 for v in get_values(table, attr)}
     for data in table:
@@ -63,7 +63,7 @@ def pie_data(table, attr):
             value = data[attr]
             if value is not None:
                 count[value] += 1
-    return {'labels' : count.keys(), 'fracs' : count.values()}
+    return {'sorts' : count.keys(), 'data' : count.values()}
     
 
 
