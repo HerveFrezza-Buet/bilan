@@ -1,0 +1,16 @@
+# Each line is a tag and a description.
+
+
+# Clouds
+
+A University of Paris cluster
+B Local cluster
+C University of NY cluster
+D Machines in the lab.
+
+# Activities
+
+DEBUG     Software debugging
+REBOOT    System reboot
+REPAIR    Hardware fix
+REINSTALL System re-installation

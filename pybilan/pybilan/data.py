@@ -53,20 +53,38 @@ def group_values_dict(table, attr, groups):
                 return g
     return group_values_fct(table, attr, group_of)
 
+def decode_values(table, attr, codes):
+    """
+    codes is {tag1 : 'this is tag1 meaning', ...}
+    Returns the table, where attr is replaced by its code expansion (or unmodified if no code is found).
+    """
+    res = []
+    for data in table:
+        if attr in data :
+            d = {k : v  for k, v in data.items()}
+            code = d[attr]
+            if code in codes:
+                d[attr] = codes[code]
+            res.append(d)
+    return res
+                
+
 def pie_data(table, attr):
     """
     returns {'sorts' : [sort1, sort2, ...], 
-             'data'  : [nb_sort1, nb_sort2, ...]}
+             'data'  : [nb_sort1, nb_sort2, ...]}, total_amount_of_data
     """
     count = {v:0 for v in get_values(table, attr)}
+    total = 0
     for data in table:
         if attr in data :
             value = data[attr]
             if value is not None:
                 count[value] += 1
-    return {'sorts' : count.keys(), 'data' : count.values()}
+                total        += 1
+    return {'sorts' : count.keys(), 'data' : count.values()}, total
 
-def bar_data(table, sort_attr, category_attr):
+def bar_data(table, category_attr, sort_attr):
     """
     Data for displaying a bar grap. Each bar corresponds to a category,
     for each bar, the amount of values of each sort is stacked.
@@ -87,14 +105,15 @@ def bar_data(table, sort_attr, category_attr):
     for i in range(nb_sorts) :
         res['data'].append([0]*nb_categories)
 
-    
+    total = 0
     for data in table:
         if sort_attr in data and category_attr in data:
             sort     = data[sort_attr]
             category = data[category_attr]
             if sort is not None and category is not None:
                 res['data'][sort_idx[sort]][category_idx[category]] += 1
-    return res
+                total                                               += 1
+    return res, total
     
 
 
@@ -115,12 +134,17 @@ if __name__ == "__main__":
     age_of = {'old' : [40, 50],
               'young' : [20, 30]}
 
+    decode_sex = {'M': 'Male', 'F': 'Female'}
+
     print('Data\n\n')
     print(table)
     print()
     print('Values')
     print(get_values(table, 'Age'))
     print(get_values(table, 'Name'))
+    print()
+    print('Decode')
+    print(decode_values(table, 'Sex', decode_sex))
     print()
     print('Make single')
     print(make_single(table, 'Age'))
@@ -135,4 +159,4 @@ if __name__ == "__main__":
     print(pie_data(table, 'Sex'))
     print()
     print('Bar')
-    print(bar_data(table, 'Age', 'Sex'))
+    print(bar_data(table, 'Sex', 'Age'))
