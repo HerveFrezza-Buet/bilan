@@ -10,7 +10,8 @@ Read the following files.
 
 - data.xlsx Contains the data (from A1). First line is a header of codes.
 - codes.txt  Associate a readable definition from a tag.
-- groups.txt Describe groups of codes (it is a code as well)
+- groups.txt Describe groups of codes
 - document.py This is a python file describing the document.
 
-There is an output directory where all the productions will be put.
+Run document.py and get the report.
+

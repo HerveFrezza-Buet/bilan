@@ -36,7 +36,7 @@ activities = data.group_values_dict(acts,   col_computers, groups)
 activities = data.decode_values(activities, col_computers, codes)
 activities = data.decode_values(activities, col_activities, codes)
 total      = document.make_bars(activities, col_computers, col_activities)
-caption = 'Activities by cluster ({} acts realized).'.format(total)
+document.caption('Activities by cluster ({} acts realized).'.format(total))
 
 # We build the latex file for the report.
 document.generate()

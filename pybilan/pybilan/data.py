@@ -13,6 +13,24 @@ def make_single(table, attr):
                     res.append(data)
     return res
 
+def select_fct(table, fct):
+    """
+    Selects the attributes for which f(data) is True
+    """
+    res = []
+    for data in table:
+        if fct(data):
+            res.append(data)
+    return res
+    
+def select_in_group(table, attr, group):
+    """
+    Selects the data for which the attribute attr belongs to group
+    """
+    def selector(data):
+        return (attr in data) and (data[attr] in group)
+    return select_fct(table, selector)
+
 def get_values(table, attr):
     """
     Returns the set (as a list) of values of attr (i.e. no duplication).
@@ -154,9 +172,13 @@ if __name__ == "__main__":
     print(group_values_dict(table, 'Age', age_of))
     print(group_values_dict(table, 'Name', country_of))
     print()
+    print('Select in group')
+    print(select_in_group(table, 'Age', [30, 50]))
+    print()
     print('Pie')
     print(pie_data(table, 'Age'))
     print(pie_data(table, 'Sex'))
     print()
     print('Bar')
     print(bar_data(table, 'Sex', 'Age'))
+
