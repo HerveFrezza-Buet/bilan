@@ -4,3 +4,4 @@ from . import excel
 from . import config
 from . import latex
 from . import report
+from . import gui

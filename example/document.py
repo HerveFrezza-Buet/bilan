@@ -15,7 +15,7 @@ document.output_dir = root_dir / 'outputs'
 
 codes    = config.read_codes(root_dir / 'code.txt')
 groups   = config.read_groups(root_dir / 'groups.txt')
-keys, acts  = excel.read(root_dir / 'data.xlsx')
+keys, acts  = excel.read(gui.filename())
 
 # We get the column titles
 col_computers, col_activities, col_dates = keys
