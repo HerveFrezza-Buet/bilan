@@ -31,6 +31,14 @@ def select_in_group(table, attr, group):
         return (attr in data) and (data[attr] in group)
     return select_fct(table, selector)
 
+def select_not_in_group(table, attr, group):
+    """
+    Selects the data for which the attribute attr do not belongs to group
+    """
+    def selector(data):
+        return (attr in data) and (data[attr] not in group)
+    return select_fct(table, selector)
+
 def get_values(table, attr):
     """
     Returns the set (as a list) of values of attr (i.e. no duplication).
@@ -83,6 +91,21 @@ def decode_values(table, attr, codes):
             code = d[attr]
             if code in codes:
                 d[attr] = codes[code]
+            res.append(d)
+    return res
+
+def decode_values_in_attr(table, attr_in, attr_out, codes):
+    """
+    codes is {tag1 : 'this is tag1 meaning', ...}
+    Returns the table, where attr_out is filled with attr_in decoding is replaced by its code expansion (or unmodified if no code is found).
+    """
+    res = []
+    for data in table:
+        if attr_in in data :
+            d = {k : v  for k, v in data.items()}
+            code = d[attr_in]
+            if code in codes:
+                d[attr_out] = codes[code]
             res.append(d)
     return res
                 
