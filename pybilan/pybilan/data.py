@@ -53,7 +53,7 @@ def get_values(table, attr):
     return values
 
 
-def group_values_fct(table, attr, group_of):
+def group_values_fct_remove(table, attr, group_of):
     """
     group_of(value) returns the group, or None
     Returns the table, where attr is replaced by its group name (or removed if None).
@@ -68,7 +68,7 @@ def group_values_fct(table, attr, group_of):
                 res.append(d)
     return res
                 
-def group_values_dict(table, attr, groups):
+def group_values_dict_remove(table, attr, groups):
     """
     groups is {g1 : [val1, val2, ...], g2 : [val1, val2, ...]}
     Returns the table, where attr is replaced by its group name (or removed if no group is found).
@@ -77,7 +77,63 @@ def group_values_dict(table, attr, groups):
         for g, vs in groups.items() :
             if val in vs :
                 return g
-    return group_values_fct(table, attr, group_of)
+    return group_values_fct_remove(table, attr, group_of)
+
+def group_values_fct_keep(table, attr, group_of):
+    """
+    group_of(value) returns the group, or None
+    Returns the table, where attr is replaced by its group name (or kept if None).
+    """
+    res = []
+    for data in table:
+        if attr in data :
+            grp = group_of(data[attr])
+            d = {k : v  for k, v in data.items()}
+            if grp is not None :
+                d[attr] = grp
+                res.append(d)
+    return res
+                
+def group_values_dict_keep(table, attr, groups):
+    """
+    groups is {g1 : [val1, val2, ...], g2 : [val1, val2, ...]}
+    Returns the table, where attr is replaced by its group name (or kept if no group is found).
+    """
+    def group_of(val):
+        for g, vs in groups.items() :
+            if val in vs :
+                return g
+    return group_values_fct_keep(table, attr, group_of)
+
+def group_values_fct_keep_in_attr(table, attr_in, attr_out, group_of):
+    """
+    group_of(value) returns the group, or None
+    The group of attr_in (or the attr_in value if no group si found) is placed in attr_out.
+    Returns the table, where attr is replaced by its group name (or kept if None).
+    """
+    res = []
+    for data in table:
+        if attr_in in data :
+            grp = group_of(data[attr_in])
+            d = {k : v  for k, v in data.items()}
+            if grp is not None :
+                d[attr_out] = grp
+            else:
+                d[attr_out] = d[attr_in]
+            res.append(d)
+    return res
+                
+def group_values_dict_keep_in_attr(table, attr_in, attr_out, groups):
+    """
+    groups is {g1 : [val1, val2, ...], g2 : [val1, val2, ...]}
+    The group of attr_in (or the attr_in value if no group si found) is placed in attr_out.
+    Returns the table, where attr is replaced by its group name (or kept if no group is found).
+    """
+    def group_of(val):
+        for g, vs in groups.items() :
+            if val in vs :
+                return g
+    return group_values_fct_keep_in_attr(table, attr_in, attr_out, group_of)
 
 def decode_values(table, attr, codes):
     """
