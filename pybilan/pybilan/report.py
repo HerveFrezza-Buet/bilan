@@ -28,6 +28,15 @@ class Document:
         plot.pie(self.tmp_dir / filename, plot_data)
         return total
         
+    def make_histo(self, rows, category_attr, legend = True):
+        filename = 'fig-{:06d}.pdf'.format(len(self.captions))
+        plot_data, total = data.histo_data(rows, category_attr)
+        plot_data['legend'] = legend
+        caption = '{} elements, categorized by {}.'.format(total, category_attr)
+        self.captions.append(caption)
+        plot.histo(self.tmp_dir / filename, plot_data)
+        return total
+    
     def make_bars(self, rows, category_attr, sort_attr, legend = True):
         filename = 'fig-{:06d}.pdf'.format(len(self.captions))
         plot_data, total = data.bar_data(rows, category_attr, sort_attr)

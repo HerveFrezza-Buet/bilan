@@ -27,15 +27,17 @@ total = document.make_pie(activities, col_activities)
 document.caption('Summary of maintenance kinds ({} acts realized).'.format(total))
 
 # Let us make a pie chart as well, counting the location (cluster) of the maintenance.
-activities = data.group_values_dict(acts, col_computers, groups)
+activities = data.group_values_dict_keep(acts, col_computers, groups)
 activities = data.decode_values(activities, col_computers, codes)
 total      = document.make_pie(activities, col_computers)
 document.caption('Summary of maintenance location ({} acts realized).'.format(total))
 
 # Let us make a bar chart, counting for each cluster the maintenance acts.
-activities = data.group_values_dict(acts,   col_computers, groups)
+activities = data.group_values_dict_keep(acts,   col_computers, groups)
 activities = data.decode_values(activities, col_computers, codes)
 activities = data.decode_values(activities, col_activities, codes)
+total      = document.make_histo(activities, col_computers)
+document.caption('Activities by cluster ({} acts realized).'.format(total))
 total      = document.make_bars(activities, col_computers, col_activities)
 document.caption('Activities by cluster ({} acts realized).'.format(total))
 

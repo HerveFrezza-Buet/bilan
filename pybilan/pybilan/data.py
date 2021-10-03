@@ -181,15 +181,38 @@ def pie_data(table, attr):
                 total        += 1
     return {'sorts' : count.keys(), 'data' : count.values()}, total
 
+def histo_data(table, category_attr):
+    """
+    Data for displaying a histo graph. Each bar corresponds to a category,
+    for each bar, the amount of values is given.
+    returns {'categories : [cat1, cat2, ...],
+             'data'      : [nb_for_cat1, nb_for_cat2, ...]}, total
+    """
+    res = {'categories' : get_values(table, category_attr),
+           'data'       : []}
+    nb_categories = len(res['categories'])
+    
+    category_idx = {s:i for i, s in enumerate(res['categories'])}
+    res['data'] = [0]*nb_categories
+
+    total = 0
+    for data in table:
+        if category_attr in data:
+            category = data[category_attr]
+            if category is not None:
+                res['data'][category_idx[category]] += 1
+                total                               += 1
+    return res, total
+    
 def bar_data(table, category_attr, sort_attr):
     """
-    Data for displaying a bar grap. Each bar corresponds to a category,
+    Data for displaying a bar graph. Each bar corresponds to a category,
     for each bar, the amount of values of each sort is stacked.
     returns {'sorts'     : [sort1, sort2, ...], 
              'categories : [cat1, cat2, ...],
              'data'      : [[nb_sort1_for_cat1, nb_sort1_for_cat2, ...],
                             [nb_sort2_for_cat1, nb_sort1_for_cat2, ...],
-                            ...]}
+                            ...]}, total
     """
     res = {'sorts'      : get_values(table, sort_attr),
            'categories' : get_values(table, category_attr),
@@ -248,8 +271,8 @@ if __name__ == "__main__":
     print(make_single(table, 'Sex'))
     print()
     print('Group values')
-    print(group_values_dict(table, 'Age', age_of))
-    print(group_values_dict(table, 'Name', country_of))
+    print(group_values_dict_keep(table, 'Age', age_of))
+    print(group_values_dict_keep(table, 'Name', country_of))
     print()
     print('Select in group')
     print(select_in_group(table, 'Age', [30, 50]))
@@ -257,6 +280,9 @@ if __name__ == "__main__":
     print('Pie')
     print(pie_data(table, 'Age'))
     print(pie_data(table, 'Sex'))
+    print()
+    print('Histo')
+    print(histo_data(table, 'Age'))
     print()
     print('Bar')
     print(bar_data(table, 'Sex', 'Age'))

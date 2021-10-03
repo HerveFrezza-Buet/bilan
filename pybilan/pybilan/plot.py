@@ -24,6 +24,27 @@ def pie(path, pie_data):
     print('File "{}" generated.'.format(fullfigname))
     plt.close(fig)
 
+def histo(path, histo_data):
+    """
+    histo_data: {'categories : [cat1, cat2, ...],
+                 'data'      : [nb_for_cat1, nb_for_cat2, ...]
+                 'legend' : True}
+    """
+    nb_categories = len(histo_data['categories'])
+    bottom        = np.zeros(nb_categories)
+    X             = np.arange(nb_categories)
+    
+    fig = plt.figure(figsize=(6, 3))
+    plt.xticks(X, histo_data['categories'], rotation=60, ha='right')
+    plt.ylabel("Nb")
+    
+    p = plt.bar(X, histo_data['data'], bottom=bottom.tolist(), edgecolor='white', width=1)
+    
+    fullfigname = str(path.absolute())
+    plt.savefig(fullfigname, bbox_inches='tight')
+    print('File "{}" generated.'.format(fullfigname))
+    plt.close(fig)
+
 def bar(path, bar_data):
     """
     bar_data: {'sorts'     : [sort1, sort2, ...], 
