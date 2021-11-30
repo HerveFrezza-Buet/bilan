@@ -18,7 +18,7 @@ def read_groups(path):
             data[words[0]] = words[1:]
     return data
 
-def read_dict_code(path, keys):
+def read_dict_codes(path, keys):
     """
     keys = ['A', 'B', 'C']
     a line is : name a b c
@@ -28,7 +28,8 @@ def read_dict_code(path, keys):
     for l in path.open():
         words = l.split()
         if len(words) > 1 and words[0][0] != '#':
-            data[words[0]] = {k:v for kv in zip(keys, words[1:])}
+            data[words[0]] = {k:v for k,v in zip(keys, words[1:])}
+    return data
     
 if __name__ == '__main__':
     import sys
