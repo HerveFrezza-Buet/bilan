@@ -44,4 +44,7 @@ document.caption('Activities by cluster ({} acts realized).'.format(total))
 # We build the latex file for the report.
 document.generate()
 
+gui.info('generation done.')
+
+
 
