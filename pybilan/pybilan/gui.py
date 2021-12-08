@@ -12,6 +12,9 @@ def xlsx_filename():
 
 def info(msg):
     mb.showinfo('Info', msg)
+    
+def error(msg):
+    mb.showerror('Error', msg)
 
 if __name__ == "__main__":
     print(xlsx_filename())
