@@ -1,5 +1,17 @@
 from pathlib import Path
 
+def table(f, col_format, print_lines, rows, caption, num):
+    res  = '\n\\begin{table}[htbp]\n'
+    res += '  \\centerline{\\begin{tabular}{' + col_format + '}\n'
+    for row in rows:
+        res += '    \\hline\n'
+        res += '    ' + ' & '.join([str(c) for c in row]) + '\\\\\n'
+    res += '    \\hline\n'
+    res += '  \\end{tabular}}\n'
+    res += '\\caption{' + caption + ' \\label{tab:' + '{:06d}'.format(num) + '}}\n'
+    res += '\\end{table}\n'
+    f.write(res)
+    
 def fig(f, filepath, caption, num) :
     res  = '\n\\begin{figure}[htbp]\n'
     res += '\\centerline{\\includegraphics[width=.8\\textwidth]{' + str(filepath.absolute()) + '}}\n'
