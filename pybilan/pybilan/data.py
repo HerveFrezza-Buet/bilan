@@ -233,6 +233,9 @@ def bar_data(table, category_attr, sort_attr):
             if sort is not None and category is not None:
                 res['data'][sort_idx[sort]][category_idx[category]] += 1
                 total                                               += 1
+        else:
+            print(f'Warning : bar_data : {sort_attr} or {category_attr} is not in {data}')
+                
     return res, total
     
 
