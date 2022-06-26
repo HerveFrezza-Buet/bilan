@@ -20,7 +20,7 @@ def read(path):
             if not_empty :
                 break
         if not not_empty :
-            break
+            continue
         content = dict()
         for c, k in enumerate(keys) :
             value = frame.at[l, c]
