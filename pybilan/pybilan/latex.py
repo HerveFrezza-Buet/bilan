@@ -67,6 +67,7 @@ if __name__ == "__main__":
     begin_document(f)
     title(f, 'Demo of document', '(this is an example)', 'John Doe', None)
     fig(f, Path('.') / 'figure.pdf', 'Some nice text', 1)
+    table(f, '|lcr|', True, [['toto', 'titi', 'tutu'], ['foo', 'bar', 367], [1, 2, 3]], 'A nice table', 2)
     end_document(f)
     f.close()
     
