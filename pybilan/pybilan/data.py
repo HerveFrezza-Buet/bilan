@@ -1,3 +1,5 @@
+import datetime
+
 def make_single(table, attr):
     """
     Returns a selection of rows in table such as values of attribute attr are not duplicated.
@@ -22,6 +24,25 @@ def select_fct(table, fct):
         if fct(data):
             res.append(data)
     return res
+
+def select_by_date(table, attr, period):
+    """
+    Selects the attribute (that has to be a date) in period=[start_time, end_time].
+    if start_time or end_time is None, the bound is not considered.
+    """
+    start_time, end_time = period
+    def selector(data):
+        if attr not in data:
+            return False
+        date = data[attr]
+        if not isinstance(date, datetime.datetime):
+            return False
+        if (start_time is not None) and (date < start_time):
+            return False
+        if (end_time is not None) and (date > end_time):
+            return False
+        return True
+    return select_fct(table, selector)
     
 def select_in_group(table, attr, group):
     """
