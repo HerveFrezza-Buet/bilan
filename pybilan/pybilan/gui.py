@@ -1,4 +1,5 @@
 import sys
+import os
 import tkinter as tk
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
@@ -11,10 +12,12 @@ def xlsx_filename():
     return Path(filename)
 
 def info(msg):
-    mb.showinfo('Info', msg)
+    os.system(f'zenity --info --text="{msg}"')
+    #mb.showinfo('Info', msg)
     
 def error(msg):
-    mb.showerror('Error', msg)
+    os.system(f'zenity --error --text="{msg}"')
+    #mb.showerror('Error', msg)
 
 if __name__ == "__main__":
     print(xlsx_filename())
