@@ -45,13 +45,13 @@ class Document:
         plot.histo(self.tmp_dir / filename, plot_data)
         return total
     
-    def make_bars(self, rows, category_attr, sort_attr, legend = True):
+    def make_bars(self, rows, category_attr, sort_attr, legend = True, display_values = False):
         filename = 'fig-{:06d}.pdf'.format(len(self.captions))
         plot_data, total = data.bar_data(rows, category_attr, sort_attr)
         plot_data['legend'] = legend
         caption = '{} elements, categorized by {}, colored by {}.'.format(total, category_attr, sort_attr)
         self.captions.append(caption)
-        plot.bar(self.tmp_dir / filename, plot_data)
+        plot.bar(self.tmp_dir / filename, plot_data, display_values)
         return total
 
     def caption(self, caption):
