@@ -45,7 +45,12 @@ def histo(path, histo_data):
     print('File "{}" generated.'.format(fullfigname))
     plt.close(fig)
 
-def bar(path, bar_data):
+    
+# function to add value labels
+def _addlabels(x,y, bottom):
+    for i in range(len(x)):
+        plt.text(i, bottom[i] + y[i]//2, y[i], ha = 'center')
+def bar(path, bar_data, display_values = False):
     """
     bar_data: {'sorts'     : [sort1, sort2, ...], 
                'categories : [cat1, cat2, ...],
@@ -66,6 +71,7 @@ def bar(path, bar_data):
     legend_data  = []
     for sort, b in enumerate(bar_data['data']) :
         p = plt.bar(X, b, bottom=bottom.tolist(), edgecolor='white', width=1)
+        _addlabels(X, b, bottom.tolist())
         legend_data.append(p[0])
         legend_names.append(bar_data['sorts'][sort])
         bottom += b
@@ -94,5 +100,5 @@ if __name__ == '__main__':
                                 [ 0,  2, 11],
                                 [10,  5, 10]], 
                 'legend'     : True}
-    bar(Path('./bar_demo.pdf'), bar_data)
+    bar(Path('./bar_demo.pdf'), bar_data, display_values = True)
                 
