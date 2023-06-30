@@ -71,7 +71,8 @@ def bar(path, bar_data, display_values = False):
     legend_data  = []
     for sort, b in enumerate(bar_data['data']) :
         p = plt.bar(X, b, bottom=bottom.tolist(), edgecolor='white', width=1)
-        _addlabels(X, b, bottom.tolist())
+        if display_values:
+            _addlabels(X, b, bottom.tolist())
         legend_data.append(p[0])
         legend_names.append(bar_data['sorts'][sort])
         bottom += b
