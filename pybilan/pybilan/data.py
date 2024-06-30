@@ -60,9 +60,10 @@ def select_not_in_group(table, attr, group):
         return (attr in data) and (data[attr] not in group)
     return select_fct(table, selector)
 
-def get_values(table, attr):
+def get_values(table, attr, order_hint = None):
     """
     Returns the set (as a list) of values of attr (i.e. no duplication).
+    order_hits is a liste of possible values. The result of get_value will respect that order for the values in that list.
     """
     values = []
     for data in table:
@@ -71,6 +72,13 @@ def get_values(table, attr):
             if value is not None:
                 if not value in values :
                     values.append(value)
+    if order_hint :
+        def key_func(elem):
+            if elem in order_hint:
+                return order_hint.index(elem)
+            else:
+                return len(order_hint)
+        values.sort(key = key_func)
     return values
 
 
@@ -187,12 +195,12 @@ def decode_values_in_attr(table, attr_in, attr_out, codes):
     return res
                 
 
-def pie_data(table, attr):
+def pie_data(table, attr, order_hint=None):
     """
     returns {'sorts' : [sort1, sort2, ...], 
              'data'  : [nb_sort1, nb_sort2, ...]}, total_amount_of_data
     """
-    count = {v:0 for v in get_values(table, attr)}
+    count = {v:0 for v in get_values(table, attr, order_hint)}
     total = 0
     for data in table:
         if attr in data :
@@ -202,14 +210,14 @@ def pie_data(table, attr):
                 total        += 1
     return {'sorts' : count.keys(), 'data' : count.values()}, total
 
-def histo_data(table, category_attr):
+def histo_data(table, category_attr, order_hint=None):
     """
     Data for displaying a histo graph. Each bar corresponds to a category,
     for each bar, the amount of values is given.
     returns {'categories : [cat1, cat2, ...],
              'data'      : [nb_for_cat1, nb_for_cat2, ...]}, total
     """
-    res = {'categories' : get_values(table, category_attr),
+    res = {'categories' : get_values(table, category_attr, order_hint),
            'data'       : []}
     nb_categories = len(res['categories'])
     
@@ -225,7 +233,7 @@ def histo_data(table, category_attr):
                 total                               += 1
     return res, total
     
-def bar_data(table, category_attr, sort_attr):
+def bar_data(table, category_attr, sort_attr, category_order_hint = None, sort_order_hint = None):
     """
     Data for displaying a bar graph. Each bar corresponds to a category,
     for each bar, the amount of values of each sort is stacked.
@@ -235,8 +243,8 @@ def bar_data(table, category_attr, sort_attr):
                             [nb_sort2_for_cat1, nb_sort1_for_cat2, ...],
                             ...]}, total
     """
-    res = {'sorts'      : get_values(table, sort_attr),
-           'categories' : get_values(table, category_attr),
+    res = {'sorts'      : get_values(table, sort_attr, sort_order_hint),
+           'categories' : get_values(table, category_attr, category_order_hint),
            'data'       : []}
     nb_sorts      = len(res['sorts'])
     nb_categories = len(res['categories'])

@@ -27,27 +27,27 @@ class Document:
         self.captions.append(caption)
         
         
-    def make_pie(self, rows, attr, legend = True):
+    def make_pie(self, rows, attr, order_hint = None, legend = True):
         filename = 'fig-{:06d}.pdf'.format(len(self.captions))
-        plot_data, total = data.pie_data(rows, attr)
+        plot_data, total = data.pie_data(rows, attr, order_hint)
         plot_data['legend'] = legend
         caption = '{} elements, gathered by {}'.format(total, attr)
         self.captions.append(caption)
         plot.pie(self.tmp_dir / filename, plot_data)
         return total
         
-    def make_histo(self, rows, category_attr, legend = True):
+    def make_histo(self, rows, category_attr, order_hint = None, legend = True):
         filename = 'fig-{:06d}.pdf'.format(len(self.captions))
-        plot_data, total = data.histo_data(rows, category_attr)
+        plot_data, total = data.histo_data(rows, category_attr, order_hint)
         plot_data['legend'] = legend
         caption = '{} elements, categorized by {}.'.format(total, category_attr)
         self.captions.append(caption)
         plot.histo(self.tmp_dir / filename, plot_data)
         return total
     
-    def make_bars(self, rows, category_attr, sort_attr, legend = True, display_values = False):
+    def make_bars(self, rows, category_attr, sort_attr, category_order_hint = None, sort_order_hint = None, legend = True, display_values = False):
         filename = 'fig-{:06d}.pdf'.format(len(self.captions))
-        plot_data, total = data.bar_data(rows, category_attr, sort_attr)
+        plot_data, total = data.bar_data(rows, category_attr, sort_attr, category_order_hint, sort_order_hint)
         plot_data['legend'] = legend
         caption = '{} elements, categorized by {}, colored by {}.'.format(total, category_attr, sort_attr)
         self.captions.append(caption)

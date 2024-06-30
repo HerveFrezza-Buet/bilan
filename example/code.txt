@@ -6,7 +6,7 @@
 A University of Paris cluster
 B Local cluster
 C University of NY cluster
-D Machines in the lab.
+D Machines in the lab
 
 # Activities
 
