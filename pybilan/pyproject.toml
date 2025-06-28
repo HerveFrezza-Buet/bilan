@@ -2,6 +2,7 @@
 name = "pybilan"
 version = "0.0.1"
 dependencies = [
+  'pandas',
   'numpy',
   'matplotlib'
 ]
