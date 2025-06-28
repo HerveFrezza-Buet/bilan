@@ -256,14 +256,16 @@ def bar_data(table, category_attr, sort_attr, category_order_hint = None, sort_o
 
     total = 0
     for data in table:
-        if sort_attr in data and category_attr in data:
+        if sort_attr not in data:
+            print(f'Warning : bar_data : sorting attribute {sort_attr} is not in {data}')
+        elif category_attr not in data:
+            print(f'Warning : bar_data : category attribute {category_attr} is not in {data}')
+        else:
             sort     = data[sort_attr]
             category = data[category_attr]
             if sort is not None and category is not None:
                 res['data'][sort_idx[sort]][category_idx[category]] += 1
                 total                                               += 1
-        else:
-            print(f'Warning : bar_data : {sort_attr} or {category_attr} is not in {data}')
                 
     return res, total
     
