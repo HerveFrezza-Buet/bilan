@@ -243,14 +243,16 @@ def bar_data(table, category_attr, sort_attr, category_order_hint = None, sort_o
                             [nb_sort2_for_cat1, nb_sort1_for_cat2, ...],
                             ...]}, total
     """
-    res = {'sorts'      : get_values(table, sort_attr, sort_order_hint),
-           'categories' : get_values(table, category_attr, category_order_hint),
+    sort_values = get_values(table, sort_attr, sort_order_hint)
+    category_values = get_values(table, category_attr, category_order_hint)
+    res = {'sorts'      : sort_values,
+           'categories' : category_values,
            'data'       : []}
     nb_sorts      = len(res['sorts'])
     nb_categories = len(res['categories'])
     
-    sort_idx     = {s:i for i, s in enumerate(res['sorts'])}
-    category_idx = {s:i for i, s in enumerate(res['categories'])}
+    sort_idx     = {s:i for i, s in enumerate(sort_values)}
+    category_idx = {s:i for i, s in enumerate(category_values)}
     for i in range(nb_sorts) :
         res['data'].append([0]*nb_categories)
 
